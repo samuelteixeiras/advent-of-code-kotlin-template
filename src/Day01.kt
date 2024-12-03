@@ -1,21 +1,54 @@
+import kotlin.math.abs
+
+
 fun main() {
-    fun part1(input: List<String>): Int {
-        return input.size
-    }
+        var lines = readInput("files/day01")
+        val (left, right) = lines.map{ line:String ->
 
-    fun part2(input: List<String>): Int {
-        return input.size
-    }
+                var first = line.substringBefore(" ").toInt();
+                var second = line.substringAfter(" ").trim().toInt();
+                first.toLong() to second.toLong()
+        }.unzip()
 
-    // Test if implementation meets criteria from the description, like:
-    check(part1(listOf("test_input")) == 1)
 
-    // Or read a large test input from the `src/Day01_test.txt` file:
-    val testInput = readInput("Day01_test")
-    check(part1(testInput) == 1)
 
-    // Read the input from the `src/Day01.txt` file.
-    val input = readInput("Day01")
-    part1(input).println()
-    part2(input).println()
+        var result = left.sorted().zip(right.sorted()).map{ (left, right) ->
+            // when you don't know abs function in ktl , we use this.
+            // if (left - right < 0 ) (left - right) * -1 else left - right
+            abs(left - right)
+        }.sum()
+
+        println(result)
+
+        // similarity
+//        val myHashMap = hashMapOf<Int, Int>()
+//        left.sorted().forEach { left ->
+//                if (!myHashMap.containsKey(left) ) {
+//                        myHashMap[left] = 0
+//                }
+//        }
+//
+//        right.sorted().forEach { right ->
+//                if (myHashMap.containsKey(right) ) {
+//                        print("what")
+//                        myHashMap[right] = myHashMap[right]!! + 1
+//                }
+//        }
+//        var total = 0;
+//        for ((key, value) in myHashMap) {
+//                println("key = $key, value = $value")
+//                total += key * value
+//        }
+//        println(total)
+
+        // using ktl for real
+        val freq : Map<Long, Int> = right.groupingBy{ it }.eachCount()
+        left.fold(0L) { acc, num -> acc + num * freq.getOrDefault(num, 0) }
+                .also(::println)
+
+
+
+
 }
+
+
