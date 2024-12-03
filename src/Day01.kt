@@ -45,10 +45,6 @@ fun main() {
         val freq : Map<Long, Int> = right.groupingBy{ it }.eachCount()
         left.fold(0L) { acc, num -> acc + num * freq.getOrDefault(num, 0) }
                 .also(::println)
-
-
-
-
 }
 
 
